@@ -1,7 +1,7 @@
 module Pattern
   def bracket(outer_precedence)
     if precedence < outer_precedence
-      "(" + to_s + ")"
+      '(' + to_s + ')'
     else
       to_s
     end
@@ -74,7 +74,8 @@ class Concatenate < Struct.new(:first, :second)
 
     start_state = first_nfa_design.start_state
     accept_states = second_nfa_design.accept_states
-    rules = first_nfa_design.rulebook.rules + second_nfa_design.rulebook.rules
+    rules = first_nfa_design.rulebook.rules +
+      second_nfa_design.rulebook.rules
     extra_rules = first_nfa_design.accept_states.map { |state|
       FARule.new(state, nil, second_nfa_design.start_state)
     }
@@ -88,7 +89,7 @@ class Choose < Struct.new(:first, :second)
   include Pattern
 
   def to_s
-    [first, second].map { |pattern| pattern.bracket(precedence) }.join("|")
+    [first, second].map { |pattern| pattern.bracket(precedence) }.join('|')
   end
 
   def precedence
@@ -100,9 +101,10 @@ class Choose < Struct.new(:first, :second)
     second_nfa_design = second.to_nfa_design
 
     start_state = Object.new
-    accept_states = first_nfa_design.accept_states +
-      second_nfa_design.accept_states
-    rules = first_nfa_design.rulebook.rules + second_nfa_design.rulebook.rules
+    accept_states = second_nfa_design.accept_states +
+      first_nfa_design.accept_states
+    rules = first_nfa_design.rulebook.rules +
+      second_nfa_design.rulebook.rules
     extra_rules = [first_nfa_design, second_nfa_design].map { |nfa_design|
       FARule.new(start_state, nil, nfa_design.start_state)
     }
@@ -116,7 +118,7 @@ class Repeat < Struct.new(:pattern)
   include Pattern
 
   def to_s
-    pattern.bracket(precedence) + "*"
+    pattern.bracket(precedence) + '*'
   end
 
   def precedence
@@ -141,8 +143,7 @@ end
 def pattern
   Repeat.new(
     Choose.new(
-      Concatenate.new(Literal.new("a"), Literal.new("b")),
-      Literal.new("a")
+      Concatenate.new(Literal.new('a'), Literal.new('b')), Literal.new('a')
     )
   )
 end
