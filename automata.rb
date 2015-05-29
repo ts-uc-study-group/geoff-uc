@@ -144,7 +144,8 @@ end
 
 def rulebook
   NFARulebook.new([
-    FARule.new(1, 'a', 1), FARule.new(1, 'a', 2), FARule.new(1, nil, 2),
-    FARule.new(2, 'b', 3), FARule.new(3, 'b', 1), FARule.new(3, nil, 2)
+    FARule.new(0, '(', 1), FARule.new(1, ')', 0),
+    FARule.new(1, '(', 2), FARule.new(2, ')', 1),
+    FARule.new(2, '(', 3), FARule.new(3, ')', 2),
   ])
 end
